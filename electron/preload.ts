@@ -22,3 +22,9 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   // You can expose other APTs you need here.
   // ...
 })
+
+contextBridge.exposeInMainWorld('api',{
+  openFolder:()=>ipcRenderer.invoke("openFolder"),
+
+  openDirectory: (folderPath: string) =>ipcRenderer.invoke("openDirectory", folderPath),
+});

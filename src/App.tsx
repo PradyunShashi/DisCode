@@ -11,12 +11,20 @@ import './App.css'
 
 function App() {
 
+  const[filesInFolder,setFilesInFolder] = useState<{
+    name: string,
+    path: string,
+    isDirectory: boolean,
+  }[]>([])
+
   return (
    <>
    <div className = "app">
-    <Topbar />
+    <Topbar 
+    setFilesInFolder={setFilesInFolder}
+    />
     <div className="workspace">
-    <File_explorer />
+    <File_explorer filesInFolder={filesInFolder}/>
     <div className = "editor-terminal">
       <Tab_bar />
       <Editor />

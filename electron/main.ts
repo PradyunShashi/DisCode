@@ -1,7 +1,8 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain} from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import fs from 'node:fs/promises'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -66,3 +67,25 @@ app.on('activate', () => {
 })
 
 app.whenReady().then(createWindow)
+
+ipcMain.handle("openFolder", async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ["openDirectory"]
+  });
+
+  if(result.canceled){
+    return null;
+  }
+  return result.filePaths[0];
+});
+
+ipcMain.handle("openDirectory",async (_event, folderPath)=>{
+  const entries = await fs.readdir(folderPath, {
+    withFileTypes: true
+  });
+  return entries.map((entry)=>({
+  name: entry.name,
+  path: path.join(folderPath, entry.name),
+  isDirectory: entry.isDirectory()
+  }));
+});

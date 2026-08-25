@@ -42,8 +42,16 @@
   width:100%;
   flex:1;
   height:100%
+  
 }
 
 .terminal{
   flex: 0 0 150px;
+  background-color: black;
+}
+
+.fileNameButton{
+  width:100%;
+  border-collapse: collapse;
+  text-align:left;
 }

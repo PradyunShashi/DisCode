@@ -1,7 +1,7 @@
 function Terminal()
 {
     return (
-        <h1>Terminal</h1>
+        <div className = "terminal">Terminal</div>
     )
 }
 

@@ -23,6 +23,8 @@
   width:250px;
   border: 1px solid black;
   height:100%;
+  font-size:12px;
+  background-color: rgb(68, 67, 67);
 }
 
 .tab_bar{
@@ -54,4 +56,45 @@
   width:100%;
   border-collapse: collapse;
   text-align:left;
+  background-color: rgb(68, 67, 67);
+  color:aliceblue;
+  border-radius:0;
+  border-left-color:white;
+}
+
+.fileNameButton:hover{
+  background-color:rgb(158, 166, 173);
+  border-color: rgb(158, 166, 173);
+}
+
+.childrenFiles{
+  border-left: 1px solid #555;
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  background: #efeeee;
+  border: 1px solid #444;
+}
+
+.tabName,
+.closeTab {
+  border: none;
+  background: none;
+}
+
+.tabName {
+  padding: 8px 12px;
+}
+
+.closeTab {
+  padding: 8px 8px;
+}
+
+.closeTab:hover{
+  background-color: aqua;
+  border:1px;
 }

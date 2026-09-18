@@ -3,3 +3,8 @@ export type fileEntry = {
     path: string,
     isDirectory: boolean,
 }
+
+export type tab = {
+    tabName: string,
+    content: string
+}

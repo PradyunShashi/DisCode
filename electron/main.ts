@@ -89,3 +89,11 @@ ipcMain.handle("openDirectory",async (_event, folderPath)=>{
   isDirectory: entry.isDirectory()
   }));
 });
+
+ipcMain.handle("readFile", async (_event, filePath) => {
+    return await fs.readFile(filePath, "utf-8");
+});
+
+ipcMain.handle("writeFile",async (_event,filePath, content)=>{
+  await fs.writeFile(filePath, content, "utf-8");
+});

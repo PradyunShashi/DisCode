@@ -27,4 +27,14 @@ contextBridge.exposeInMainWorld('api',{
   openFolder:()=>ipcRenderer.invoke("openFolder"),
 
   openDirectory: (folderPath: string) =>ipcRenderer.invoke("openDirectory", folderPath),
+
+  readFile: (filePath: string) =>ipcRenderer.invoke("readFile",filePath),
+
+  writeFile: (filePath: string, content: string) =>ipcRenderer.invoke("writeFile", filePath, content),
+  onTerminalOutput: (callback: (data: string) => void) => {
+    ipcRenderer.on('terminal-output', (_event, data) => callback(data))
+  },
+  sendTerminalInput: (data: string) => {
+      ipcRenderer.send('terminal-input', data)
+  }
 });

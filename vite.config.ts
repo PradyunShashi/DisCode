@@ -5,6 +5,14 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      'monaco-editor/esm/vs/editor/editor.api.js': path.resolve(
+        __dirname,
+        'node_modules/monaco-editor/esm/vs/editor/editor.api.js',
+      ),
+    },
+  },
   plugins: [
     react(),
     electron({
@@ -14,7 +22,10 @@ export default defineConfig({
         vite: {
       build: {
         rollupOptions: {
-          external: ['node-pty']
+          // ws conditionally loads native performance helpers such as bufferutil.
+          // Leave it (and the Yjs server that uses it) to Electron's Node runtime
+          // instead of turning those optional requires into bundle-time imports.
+          external: ['node-pty', 'ws', '@y/websocket-server/utils']
         }
       }
     }

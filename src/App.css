@@ -4,7 +4,10 @@
  display: flex;
   gap: 12px;
   width: 100%;
-  height: 45px;
+  min-height: 45px;
+  align-items: center;
+  padding: 4px 8px;
+  flex-wrap: wrap;
 }
 
 .app{
@@ -17,42 +20,310 @@
   display:flex;
   flex-direction:row;
   flex:1;
+  min-width:0;
+  min-height:0;
+  overflow:hidden;
 }
 
 .file_explorer{
-  width:250px;
+  flex:0 0 250px;
+  min-width:0;
   border: 1px solid black;
   height:100%;
   font-size:12px;
   background-color: rgb(68, 67, 67);
+  overflow:auto;
+}
+
+.resize-handle {
+  flex: 0 0 auto;
+  z-index: 5;
+  touch-action: none;
+  user-select: none;
+  background: #30343b;
+  transition: background-color 120ms ease;
+}
+
+.resize-handle:hover,
+.resize-handle:focus-visible {
+  background: #60a5fa;
+  outline: none;
+}
+
+.resize-handle-vertical {
+  width: 6px;
+  cursor: col-resize;
+}
+
+.resize-handle-horizontal {
+  width: 100%;
+  height: 6px;
+  cursor: row-resize;
 }
 
 .tab_bar{
   display:flex;
   height:25px;
   width:100%;
+  flex:0 0 25px;
 }
 
 .editor-terminal{
   display:flex;
   flex-direction:column;
   flex:1;
+  min-width:0;
+  min-height:0;
   border: 1px solid black;
 }
 
 .editor{
   width:100%;
   flex:1;
-  height:100%
+  min-height:0;
+  height:100%;
+  overflow:hidden;
   
 }
 
-.terminal{
-  flex: 0 0 300px;
-  background-color: black;
-  height: 500px; 
+.editor-placeholder {
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 35%, #26334a, #171c27 65%);
+  color: #dbeafe;
+}
+
+.editor-placeholder-content {
+  text-align: center;
+  opacity: 0.9;
+}
+
+.editor-placeholder-content h2 {
+  margin: 12px 0 4px;
+  font-size: 22px;
+}
+
+.editor-placeholder-content p {
+  margin: 0;
+  color: #9ca3af;
+}
+
+.editor-placeholder-mark {
+  color: #60a5fa;
+  font: 700 42px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.collaboration-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.run-controls {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.run-toolchain-label { color: #4b5563; font-size: 12px; white-space: nowrap; }
+
+.compiler-picker { position: relative; width: 245px; }
+
+.compiler-picker-input {
   width: 100%;
-  overflow:auto;     
+  border: 1px solid #4b5563;
+  border-radius: 4px;
+  padding: 6px 7px;
+  background: #111827;
+  color: #f9fafb;
+  font: inherit;
+  font-size: 12px;
+}
+
+.compiler-picker-options {
+  position: absolute;
+  z-index: 120;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 4px;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  background: #1f2937;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 40%);
+}
+
+.compiler-option {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #f9fafb;
+  text-align: left;
+  cursor: pointer;
+}
+
+.compiler-option:hover,
+.compiler-option.selected { background: #374151; }
+.compiler-option small { color: #9ca3af; font-size: 10px; }
+.compiler-path-option { margin-top: 4px; border-top: 1px solid #4b5563; }
+.compiler-no-results { padding: 8px 9px; color: #9ca3af; font-size: 11px; }
+.run-controls button { padding: 6px 8px; font-size: 12px; white-space: nowrap; }
+
+.collaboration-controls input {
+  width: 122px;
+  border: 1px solid #4b5563;
+  border-radius: 4px;
+  padding: 6px 8px;
+  background: #111827;
+  color: #f9fafb;
+}
+
+.collaboration-controls button, .host-addresses {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.host-addresses {
+  color: #86efac;
+  font-size: 11px;
+}
+
+.guest-permission-empty { color: #9ca3af; font-size: 11px; }
+.guest-color-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+.collaborators-menu { position: relative; }
+
+.collaborators-popover {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
+  background: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 45%);
+}
+
+.collaborators-popover-title {
+  padding: 7px 8px 10px;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.collaborator-row {
+  display: flex;
+  min-height: 38px;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 8px;
+  border-top: 1px solid #374151;
+  font-size: 12px;
+}
+
+.collaborator-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.collaborator-role { color: #9ca3af; font-size: 11px; }
+.host-role { color: #86efac; font-weight: 700; }
+.collaborator-edit-control, .collaborator-view-permission { display: inline-flex; gap: 5px; align-items: center; color: #d1d5db; font-size: 11px; }
+.collaborator-edit-control input { margin: 0; }
+
+.shared-workspace-title {
+  padding: 8px;
+  color: #93c5fd;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.shared-file {
+  padding-left: 10px;
+}
+
+.shared-directory { color: #bfdbfe; }
+
+.shared-workspace-empty {
+  padding: 0 10px;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.shared-workspace-status {
+  padding: 0 8px 6px;
+  color: #86efac;
+  font-size: 11px;
+}
+
+.collaboration-status {
+  padding: 0 8px 6px;
+  font-size: 11px;
+  text-transform: capitalize;
+}
+
+.status-connected { color: #86efac; }
+.status-connecting { color: #fde047; }
+.status-disconnected { color: #fca5a5; }
+
+.file-review-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: rgb(0 0 0 / 65%);
+}
+
+.file-review-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(680px, 90vw);
+  max-height: 80vh;
+  padding: 20px;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+.file-review-dialog h2 { margin: 0 0 8px; }
+.file-review-dialog p { margin: 0 0 14px; color: #cbd5e1; }
+
+.file-review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: auto;
+  min-height: 100px;
+  padding: 8px;
+  background: #111827;
+}
+
+.file-review-list label { display: flex; gap: 8px; align-items: center; }
+.file-review-list span { overflow-wrap: anywhere; }
+.file-review-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 14px; }
+
+.terminal{
+  flex: 0 0 auto;
+  background-color: black;
+  min-height: 120px;
+  width: 100%;
+  overflow:hidden;
+  padding: 4px;
+  outline: none;
 
 }
 

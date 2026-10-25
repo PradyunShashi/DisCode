@@ -31,10 +31,20 @@ contextBridge.exposeInMainWorld('api',{
   readFile: (filePath: string) =>ipcRenderer.invoke("readFile",filePath),
 
   writeFile: (filePath: string, content: string) =>ipcRenderer.invoke("writeFile", filePath, content),
+  browseExecutable: () => ipcRenderer.invoke('browse-executable'),
+  getWorkspaceFiles: (folderPath: string) => ipcRenderer.invoke('get-workspace-files', folderPath),
   onTerminalOutput: (callback: (data: string) => void) => {
-    ipcRenderer.on('terminal-output', (_event, data) => callback(data))
+    const listener = (_event: Electron.IpcRendererEvent, data: string) => callback(data)
+    ipcRenderer.on('terminal-output', listener)
+    return () => ipcRenderer.removeListener('terminal-output', listener)
   },
   sendTerminalInput: (data: string) => {
       ipcRenderer.send('terminal-input', data)
-  }
+  },
+  resizeTerminal: (columns: number, rows: number) => ipcRenderer.send('terminal-resize', columns, rows),
+  writeTerminalMessage: (data: string) => ipcRenderer.send('terminal-message', data),
+  startCollaborationServer: (port?: number) => ipcRenderer.invoke('start-collaboration-server', port),
+  stopCollaborationServer: () => ipcRenderer.invoke('stop-collaboration-server'),
+  runSharedFile: (workspaceRoot: string, files: { path: string; content: string }[], entryPath: string, toolchain: string, executablePath?: string) =>
+    ipcRenderer.invoke('run-shared-file', workspaceRoot, files, entryPath, toolchain, executablePath),
 });

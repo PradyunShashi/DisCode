@@ -34,6 +34,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.mjs'),
     },
   })
+  startTerminal(win);
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -97,3 +98,25 @@ ipcMain.handle("readFile", async (_event, filePath) => {
 ipcMain.handle("writeFile",async (_event,filePath, content)=>{
   await fs.writeFile(filePath, content, "utf-8");
 });
+
+import * as pty from 'node-pty'
+
+let shell: pty.IPty
+
+function startTerminal(mainWindow: BrowserWindow) {
+    shell = pty.spawn('cmd.exe', [], {
+        cols: 80,
+        rows: 30,
+        cwd: process.env.USERPROFILE,
+        env: process.env as Record<string, string>
+    })
+
+
+    shell.onData((data) => {
+        mainWindow.webContents.send('terminal-output', data)
+    })
+}
+
+ipcMain.on('terminal-input', (_event, data: string) => {
+    shell.write(data)
+})
